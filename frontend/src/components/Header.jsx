@@ -1,13 +1,32 @@
 import React from 'react'
-import {Navbar,Nav,Container,Badge} from 'react-bootstrap';
+import {Navbar,Nav,Container,Badge, NavDropdown} from 'react-bootstrap';
 import {FaShoppingCart,FaUser} from 'react-icons/fa';/*importing the shopping cart icons from font awesome icons*/
 import logo from '../assets/logo.png'
 import {LinkContainer} from 'react-router-bootstrap'
-import {useSelector} from 'react-redux'
+import {useSelector,useDispatch} from 'react-redux'
+import { useLogoutMutation } from '../slices/usersApiSlice';
+import {logout} from '../slices/authSlice';
+import { useNavigate } from 'react-router-dom';
 /*Wrap your React Bootstrap element in a <LinkContainer> to make it behave like a React Router <Link>
 <LinkContainer> accepts same parameters as React Router's <NavLink>. It is required for embedding links in navbars*/
 const Header = () => {
   const{cartItems}=useSelector((state)=>state.cart);//logic to show number of items in our cart in header
+  const{userInfo}=useSelector((state)=>state.auth);
+  const dispatch=useDispatch();
+  const navigate=useNavigate();
+  const [logoutApiCall]=useLogoutMutation();
+  const logoutHandler=async()=>{
+   try{
+    await logoutApiCall().unwrap();
+    dispatch(logout());
+    navigate('/login');
+   }
+   catch(err)
+   {
+    console.log(err)
+   }
+
+  }
   return (
     <header>
     <Navbar bg="dark" variant="dark" expand="md" collapseOnSelect>
@@ -25,9 +44,20 @@ const Header = () => {
                 </Badge>)}
                 </Nav.Link>
                 </LinkContainer>
-                <LinkContainer to='/login'>
-                <Nav.Link><FaUser/>Sign In</Nav.Link>
-                </LinkContainer>
+                {userInfo?(
+                  <NavDropdown title={userInfo.name} id='username'>
+                  <LinkContainer to='/profile'>
+                    <NavDropdown.Item>Profile</NavDropdown.Item>
+                  </LinkContainer>
+                  <NavDropdown.Item onClick={logoutHandler}>
+                    Logout
+                  </NavDropdown.Item>
+
+                  </NavDropdown>
+                ):( <LinkContainer to='/login'>
+                <Nav.Link href='/login'><FaUser/>Sign In</Nav.Link>
+                </LinkContainer>)}
+               
             </Nav>
         </Navbar.Collapse>
 

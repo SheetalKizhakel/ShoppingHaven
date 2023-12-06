@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { updateCart } from "../utils/cartUtils";
-const initialState=localStorage.getItem("cart")?JSON.parse(localStorage.getItem("cart")):{cartItems:[]};
+const initialState=localStorage.getItem("cart")?JSON.parse(localStorage.getItem("cart")):{cartItems:[],shippingAddress:{},paymentMethod:'Paypal'};
 
 const cartSlice=createSlice({
     name:"cart",
@@ -22,12 +22,25 @@ const cartSlice=createSlice({
         removeFromCart:(state,action)=>{
             state.cartItems=state.cartItems.filter((x)=>x._id!==action.payload);//return all the cartitems that dont equal the one we want to delete
             return updateCart(state);
-        }
+        },
+        saveShippingAddress:(state,action)=>{
+            state.shippingAddress=action.payload;
+            return updateCart(state);
+        },
+        savePaymentMethod:(state,action)=>{
+            state.paymentMethod=action.payload;
+            return updateCart(state);
+        },
+        clearCartItems:(state,action)=>{
+            state.cartItems=[];
+            return updateCart(state);
+        },
     },
 
 });
+export const {addToCart,removeFromCart,saveShippingAddress,savePaymentMethod,clearCartItems}=cartSlice.actions;
 export default cartSlice.reducer;
-export const {addToCart,removeFromCart}=cartSlice.actions;
+
 //A "slice" is a collection of Redux reducer logic and actions for a single feature in your app, typically defined together in a single file.
 //A function that accepts an initial state, an object of reducer functions, and a "slice name", and automatically generates action creators and action types that correspond to the reducers and state.
 //The name comes from splitting up the root Redux state object into multiple "slices" of state.

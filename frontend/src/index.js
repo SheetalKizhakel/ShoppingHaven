@@ -14,9 +14,14 @@ import ProductScreen from './screens/ProductScreen';
 import CartScreen from './screens/CartScreen';
 import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
+import ShippingScreen from './screens/ShippingScreen';
+import PrivateRoute from './components/PrivateRoute.jsx';
+import PaymentScreen from './screens/PaymentScreen.jsx';
+import PlaceOrderScreen from './screens/PlaceOrderScreen.jsx'
 //we are putting our routes in the index.js
 //path has the url relative to the root / and element takes as parameter whatever you want to display
 //In Route :id is dynamic routing
+//we don't want to be redirected to shipping unless we are logged in so we keep it in private Route
 const router=createBrowserRouter(createRoutesFromElements(
   <Route path="/" element={<App/>}>
   <Route index={true} path="/" element={<HomeScreen/>}/>
@@ -24,10 +29,15 @@ const router=createBrowserRouter(createRoutesFromElements(
   <Route path="/cart" element={<CartScreen/>}/>
   <Route path='/login' element={<LoginScreen/>}/>
   <Route path='/register' element={<RegisterScreen/>}/>
-  
+
+  <Route path='' element={<PrivateRoute/>}>
+  <Route path='/shipping' element={<ShippingScreen/>}/>
+  <Route path='/payment' element={<PaymentScreen/>}/>
+  <Route path='/placeorder' element={<PlaceOrderScreen/>}/>
+  </Route>
 
   </Route>
-))
+));
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>

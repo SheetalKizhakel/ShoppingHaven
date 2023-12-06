@@ -25,6 +25,9 @@ const CartScreen = () => {
     const checkoutHandler=()=>{
         navigate('/login?redirect=/shipping');//if we are logged in we can continue to shipping otherwise it will redirect to login page
     }
+    const backtohome=()=>{
+        navigate('/');
+    }
 
   return (
    <Row>
@@ -68,11 +71,17 @@ const CartScreen = () => {
                             </Button>
                         </Col>
                     </Row>
+                   
                 </ListGroup.Item>
             ))}</ListGroup>
 
         )
     }
+    <Row>
+                    <Button type='button' className='btn-block' disabled={cartItems.length===0} onClick={backtohome}>
+                        Continue shopping
+                    </Button>
+                    </Row>
     </Col>
     <Col md={4}>
         <Card>

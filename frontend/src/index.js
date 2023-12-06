@@ -2,6 +2,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import {createBrowserRouter,createRoutesFromElements,Route,RouterProvider} from 'react-router-dom';
+import {PayPalScriptProvider} from '@paypal/react-paypal-js';
 import {Provider} from 'react-redux'
 import store from './store';
 import './assets/styles/bootstrap.custom.css';
@@ -18,6 +19,8 @@ import ShippingScreen from './screens/ShippingScreen';
 import PrivateRoute from './components/PrivateRoute.jsx';
 import PaymentScreen from './screens/PaymentScreen.jsx';
 import PlaceOrderScreen from './screens/PlaceOrderScreen.jsx'
+import OrderScreen from './screens/OrderScreen.jsx';
+import ProfileScreen from './screens/ProfileScreen.jsx';
 //we are putting our routes in the index.js
 //path has the url relative to the root / and element takes as parameter whatever you want to display
 //In Route :id is dynamic routing
@@ -34,16 +37,21 @@ const router=createBrowserRouter(createRoutesFromElements(
   <Route path='/shipping' element={<ShippingScreen/>}/>
   <Route path='/payment' element={<PaymentScreen/>}/>
   <Route path='/placeorder' element={<PlaceOrderScreen/>}/>
+  <Route path='/order/:id' element={<OrderScreen/>}/>
+  <Route path='/profile' element={<ProfileScreen/>}/>
   </Route>
 
   </Route>
 ));
 const root = ReactDOM.createRoot(document.getElementById('root'));
+//The provider componenet makes the redux store available to any nested component
 root.render(
   <React.StrictMode>
  
   <Provider store={store}>
+  <PayPalScriptProvider deferLoading={true}>
    <RouterProvider router={router}/>
+   </PayPalScriptProvider>
    </Provider>
   </React.StrictMode>
 );

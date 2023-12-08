@@ -1,10 +1,13 @@
 //file which contains route for product
 //connect controller functions to routes
 import express from 'express';
-import { getProducts,getProductById } from '../controllers/productController.js';
+import { getProducts,getTopProducts,getProductById, createProduct,updateProduct,deleteProduct,createProductReview} from '../controllers/productController.js';
+import {protect,admin} from '../middleware/authMiddleware.js';
 const router=express.Router();
-router.route('/').get(getProducts);
-router.route('/:id').get(getProductById);
+router.route('/').get(getProducts).post(protect,admin,createProduct);
+router.get('/top',getTopProducts)
+router.route('/:id').get(getProductById).put(protect,admin,updateProduct).delete(protect,admin,deleteProduct);
+router.route('/:id/reviews').post(protect,createProductReview)
 //import products from '../data/products.js';
 
 //we need asynchandler because mongoose always returns back a promise

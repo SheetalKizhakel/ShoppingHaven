@@ -3,7 +3,7 @@ const notFound=(req,res,next)=>{
     res.status(404);
     next(error);
 };
-const errorHandler=(err,rq,res,next)=>{
+const errorHandler=(err,req,res,next)=>{//Errors are handled by one or more special middleware functions that have four arguments, instead of the usual three: (err, req, res, next). 
     let statusCode=res.statusCode===200?500:res.statusCode;
     let message=err.message;
 

@@ -31,14 +31,16 @@ const cartSlice=createSlice({
             state.paymentMethod=action.payload;
             return updateCart(state);
         },
-        clearCartItems:(state,action)=>{
-            state.cartItems=[];
-            return updateCart(state);
-        },
+        clearCartItems: (state, action) => {
+            state.cartItems = [];
+            localStorage.setItem('cart', JSON.stringify(state));
+          },
+        resetCart: (state) => (state = initialState),
+       
     },
 
 });
-export const {addToCart,removeFromCart,saveShippingAddress,savePaymentMethod,clearCartItems}=cartSlice.actions;
+export const {addToCart,removeFromCart,saveShippingAddress,savePaymentMethod,clearCartItems,resetCart}=cartSlice.actions;
 export default cartSlice.reducer;
 
 //A "slice" is a collection of Redux reducer logic and actions for a single feature in your app, typically defined together in a single file.

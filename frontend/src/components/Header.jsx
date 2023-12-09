@@ -8,6 +8,7 @@ import { useLogoutMutation } from '../slices/usersApiSlice';
 import SearchBox from '../components/SearchBox';
 import {logout} from '../slices/authSlice';
 import { useNavigate } from 'react-router-dom';
+import {resetCart} from '../slices/cartSlice'
 /*Wrap your React Bootstrap element in a <LinkContainer> to make it behave like a React Router <Link>
 <LinkContainer> accepts same parameters as React Router's <NavLink>. It is required for embedding links in navbars*/
 const Header = () => {
@@ -20,6 +21,7 @@ const Header = () => {
    try{
     await logoutApiCall().unwrap();
     dispatch(logout());
+    dispatch(resetCart());
     navigate('/login');
    }
    catch(err)
